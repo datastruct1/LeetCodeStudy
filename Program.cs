@@ -4,11 +4,8 @@ public static class Program
 {
     public static void Main(string[] args)
     {
-        var ti = new Ti860();
+        var ti = new Ti976();
 
-        ti.LemonadeChange([5, 5,10, 10, 20]);
-
-
-    
+        ti.LargestPerimeter([5,3,6,1,9,9]);
     }
 }
