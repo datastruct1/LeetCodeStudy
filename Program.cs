@@ -7,6 +7,6 @@ public static class Program
     {
         var ti = new DataStruct();
 
-        ti.RemoveDuplicateLetters("cbabc");
+        ti.CountStudents([1, 0, 1, 0], [0, 1, 0, 1]);
     }
 }
