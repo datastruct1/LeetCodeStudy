@@ -7,6 +7,7 @@ public static class Program
     {
         var ti = new DataStruct();
 
-        ti.CountStudents([1, 0, 1, 0], [0, 1, 0, 1]);
+        var result = ti.TimeRequiredToBuy([5, 1, 1, 1], 0);
+        Console.WriteLine(result);
     }
 }

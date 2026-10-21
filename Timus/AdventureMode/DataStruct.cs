@@ -3,6 +3,8 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection.Metadata.Ecma335;
+using System.Runtime.CompilerServices;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
@@ -313,14 +315,34 @@ namespace LeetCodeStudy.Timus.AdventureMode
         }
         public int TimeRequiredToBuy(int[] tickets, int k)
         {
-            int len = tickets.Length;
             var queue = new MyQueue<int>();
-            for (int i = 0; i < len; i++)
+            int res = 0;
+            for (int i = 0; i < tickets.Length; i++)
                 queue.Enqueue(i);
-            foreach(int t in tickets)
+            while (true)
             {
-                tickets[queue.Peek()]--;
-                queue.Dequeue();
+                int person = queue.Dequeue();
+                tickets[person]--;
+                res++;
+                if (person == k && tickets[person] == 0)
+                    return res;
+                if (tickets[person] > 0)
+                    queue.Enqueue(person);
+            }
+        }
+
+        #endregion
+        #region 堆
+        public int LastStoneWeight(int[] stones)
+        {
+            int len = stones.Length;
+            int res = 0;
+            for(int i = 0; i < len; i++)
+            {
+                var a = stones[i];
+                if (max < stones[i])
+                    max = stones[i];
+
             }
             return 1;
         }
@@ -417,6 +439,54 @@ namespace LeetCodeStudy.Timus.AdventureMode
             data = newData;
             head = 0;
             tail = Count;
+        }
+    }
+
+    public class MySecQueue
+    {
+        private Stack<int> InStack;
+        private Stack<int> OutStack;
+        public MySecQueue()
+        {
+            InStack = new Stack<int>();
+            OutStack = new Stack<int>();
+
+        }
+
+        public void Push(int x)
+        {
+            InStack.Push(x);
+        }
+
+        public int Pop()
+        {
+            if (OutStack.Count == 0)
+            {
+                while (InStack.Count > 0)
+                {
+                    var a = InStack.Pop();
+                    OutStack.Push(a);
+                }
+            }
+            return OutStack.Pop();
+        }
+
+        public int Peek()
+        {
+            if (OutStack.Count == 0)
+            {
+                while (InStack.Count > 0)
+                {
+                    var a = InStack.Pop();
+                    OutStack.Push(a);
+                }
+            }
+            return OutStack.Peek();
+        }
+
+        public bool Empty()
+        {
+            return InStack.Count == 0 && OutStack.Count == 0;
         }
     }
 }
