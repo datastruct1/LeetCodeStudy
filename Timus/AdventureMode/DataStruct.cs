@@ -134,7 +134,7 @@ namespace LeetCodeStudy.Timus.AdventureMode
         }
         public int EvalRPN(string[] tokens)
         {
-            var Stack = new MyStack<int>();
+            var Stack = new Stack<int>();
             foreach (var s in tokens)
             {
                 if (s == "+" || s == "-" || s == "*" || s == "/")
@@ -159,7 +159,7 @@ namespace LeetCodeStudy.Timus.AdventureMode
         }
         public int[] ExclusiveTime(int n, IList<string> logs)
         {
-            var Stack = new MyStack<int>();
+            var Stack = new Stack<int>();
             int preTime = 0;
             int[] res = new int[n];
             foreach (var l in logs)
@@ -188,7 +188,7 @@ namespace LeetCodeStudy.Timus.AdventureMode
         public int[] FinalPrices(int[] prices)
         {
             int len = prices.Length;
-            var stack = new MyStack<int>();
+            var stack = new Stack<int>();
             for (int i = 0; i < len; i++)
             {
                 while (stack.Count > 0 && prices[stack.Peek()] >= prices[i])
@@ -204,7 +204,7 @@ namespace LeetCodeStudy.Timus.AdventureMode
         {
             int len = temperatures.Length;
             int[] res = new int[len];
-            var stack = new MyStack<int>();
+            var stack = new Stack<int>();
             for (int i = 0; i < len; i++)
             {
                 while (stack.Count > 0 && temperatures[stack.Peek()] < temperatures[i])
@@ -315,7 +315,7 @@ namespace LeetCodeStudy.Timus.AdventureMode
         }
         public int TimeRequiredToBuy(int[] tickets, int k)
         {
-            var queue = new MyQueue<int>();
+            var queue = new Queue<int>();
             int res = 0;
             for (int i = 0; i < tickets.Length; i++)
                 queue.Enqueue(i);
@@ -340,8 +340,7 @@ namespace LeetCodeStudy.Timus.AdventureMode
             for(int i = 0; i < len; i++)
             {
                 var a = stones[i];
-                if (max < stones[i])
-                    max = stones[i];
+              
 
             }
             return 1;
@@ -349,108 +348,15 @@ namespace LeetCodeStudy.Timus.AdventureMode
 
         #endregion
     }
-    //手动栈
-    public class MyStack<T>
-    {
-        T[] data;
-        int top;
-        public int Count => top + 1;
-        public bool IsEmpty => top == -1;
-        public MyStack(int len = 10)
-        {
-            data = new T[len];
-            top = -1;
-        }
-        public void Push(T item)
-        {
-            if (top + 1 == data.Length)
-                Resize(data.Length * 2);
-            top++;
-            data[top] = item;
-        }
-        public T Pop()
-        {
-            if (IsEmpty)
-                throw new InvalidOperationException("空");
-            var a = data[top];
-            top--;
-            return a;
-        }
-        public T Peek()
-        {
-            if (IsEmpty)
-                throw new InvalidOperationException("空");
-            return data[top];
-
-        }
-        private void Resize(int newCapacity)
-        {
-            T[] newData = new T[newCapacity];
-            Array.Copy(data, newData, top + 1);
-            data = newData;
-        }
-    }
-
-    public class MyQueue<T>
-    {
-        T[] data;
-        int head;
-        int tail;
-        int count;
-        public int Count => count;
-        public bool IsEmpty => count == 0;
-        public bool IsFull => count == data.Length;
-        public MyQueue(int Capcity = 10)
-        {
-            data = new T[Capcity];
-            head = 0;
-            tail = 0;
-            count = 0;
-        }
-        public void Enqueue(T item)
-        {
-            if (IsFull)
-                Resize(2 * data.Length);
-            data[tail] = item;
-            tail = (tail + 1) % data.Length;
-            count++;
-        }
-        public T Dequeue()
-        {
-            if (IsEmpty)
-                throw new InvalidOperationException("队空");
-            var a = data[head];
-            data[head] = default(T);
-            head = (head + 1) % data.Length;
-            count--;
-            return a;
-        }
-        public T Peek()
-        {
-            if (IsEmpty)
-                throw new InvalidOperationException("队空");
-            return data[head];
-        }
-        private void Resize(int newCapcity)
-        {
-            T[] newData = new T[newCapcity];
-            for (int i = 0; i < Count; i++)
-                newData[i] = data[(head + i) % data.Length];
-            data = newData;
-            head = 0;
-            tail = Count;
-        }
-    }
-
-    public class MySecQueue
+  
+    public class StackForQueue
     {
         private Stack<int> InStack;
         private Stack<int> OutStack;
-        public MySecQueue()
+        public StackForQueue()
         {
             InStack = new Stack<int>();
             OutStack = new Stack<int>();
-
         }
 
         public void Push(int x)

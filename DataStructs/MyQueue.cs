@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Drawing;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -22,12 +23,33 @@ namespace LeetCodeStudy.DataStructs
         }
         public void Enqueue(T item)
         {
-            if(IsFull)
-            {
-
-            }
+            if (IsFull)
+                Resize(2 * data.Length);
             data[tail] = item;
-            tail++;
+            tail = (tail + 1) % data.Length;
+        }
+        public T Dequeue()
+        {
+            if (IsEmpty)
+                throw new InvalidOperationException("队空");
+            var a = data[head];
+            head = (head + 1) % data.Length;
+            return a;
+        }
+        public T Peek()
+        {
+            if (IsEmpty)
+                throw new InvalidOperationException("队空");
+            return data[head];
+        }
+        private void Resize(int newCapcity)
+        {
+            T[] newData = new T[newCapcity];
+            for(int i = 0; i < newCapcity; i++)
+                newData[i] = data[(head + i) % data.Length];
+            head = 0;
+            data = newData;
+            tail = Count;
         }
     }
 }
