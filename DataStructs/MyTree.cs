@@ -50,7 +50,7 @@ namespace LeetCodeStudy.DataStructs
 
         }
 
-     
+
 
         private void PreOrder(TreeNode root)
         {
@@ -88,5 +88,6 @@ namespace LeetCodeStudy.DataStructs
                 if (node.right != null) queue.Enqueue(node.right);
             }
         }
+       
     }
 }

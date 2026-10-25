@@ -1,4 +1,5 @@
-﻿using Microsoft.Win32.SafeHandles;
+﻿using LeetCodeStudy.DataStructs;
+using Microsoft.Win32.SafeHandles;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -347,8 +348,54 @@ namespace LeetCodeStudy.Timus.AdventureMode
         }
 
         #endregion
+        #region 树
+        public IList<IList<int>> Le2velOrder(TreeNode root)
+        {
+            var res = new List<IList<int>>();
+            if (root == null) return res;
+            var queue = new Queue<TreeNode>();
+            queue.Enqueue(root);
+            while (queue.Count > 0)
+            {
+                var size = queue.Count;
+                var levelList = new List<int>();
+                for (int i = 0; i < size; i++)
+                {
+                    TreeNode node = queue.Dequeue();
+                    levelList.Add(node.val);
+                    if (node.left != null) queue.Enqueue(node.left);
+                    if (node.right != null) queue.Enqueue(node.right);
+                }
+                res.Add(levelList);
+            }
+            return res;
+        }
+        public IList<int> RightSideView(TreeNode root)
+        {
+            var res = new List<int>();
+            if (root == null) return res;
+            var queue = new Queue<TreeNode>();
+            queue.Enqueue(root);
+            while(queue.Count>0)
+            {
+                var size = queue.Count;
+                for (int i = 0; i < size; i++)
+                {
+                    var node = queue.Dequeue();
+                 
+                    if (i == size-1) 
+                        res.Add(node.val);
+                    if (node.left != null) 
+                        queue.Enqueue(node.left);
+                    if (node.right != null) 
+                        queue.Enqueue(node.right);
+                }
+            }
+            return res;
+        }
+        #endregion
     }
-  
+
     public class StackForQueue
     {
         private Stack<int> InStack;
