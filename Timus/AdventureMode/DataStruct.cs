@@ -9,6 +9,7 @@ using System.Runtime.CompilerServices;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
+using System.Xml.Linq;
 
 namespace LeetCodeStudy.Timus.AdventureMode
 {
@@ -338,10 +339,10 @@ namespace LeetCodeStudy.Timus.AdventureMode
         {
             int len = stones.Length;
             int res = 0;
-            for(int i = 0; i < len; i++)
+            for (int i = 0; i < len; i++)
             {
                 var a = stones[i];
-              
+
 
             }
             return 1;
@@ -376,20 +377,67 @@ namespace LeetCodeStudy.Timus.AdventureMode
             if (root == null) return res;
             var queue = new Queue<TreeNode>();
             queue.Enqueue(root);
-            while(queue.Count>0)
+            while (queue.Count > 0)
             {
                 var size = queue.Count;
                 for (int i = 0; i < size; i++)
                 {
                     var node = queue.Dequeue();
-                 
-                    if (i == size-1) 
+                    if (i == size - 1)
                         res.Add(node.val);
-                    if (node.left != null) 
+                    if (node.left != null)
                         queue.Enqueue(node.left);
-                    if (node.right != null) 
+                    if (node.right != null)
                         queue.Enqueue(node.right);
                 }
+            }
+            return res;
+        }
+        public IList<double> AverageOfLevels(TreeNode root)
+        {
+            var res = new List<double>();
+            if (root == null) return res;
+            var queue = new Queue<TreeNode>();
+            queue.Enqueue(root);
+            while (queue.Count > 0)
+            {
+                var size = queue.Count;
+                double sum = 0;
+                for (int i = 0; i < size; i++)
+                {
+                    var node = queue.Dequeue();
+                    sum += node.val;
+                    if (node.left != null)
+                        queue.Enqueue(node.left);
+                    if (node.right != null)
+                        queue.Enqueue(node.right);
+                }
+                res.Add(sum / size);
+            }
+            return res;
+        }
+
+        public IList<int> LargestValues(TreeNode root)
+        {
+            var res = new List<int>();
+            if(root == null) return res;
+            var queue = new Queue<TreeNode>();
+            queue.Enqueue(root);
+            while(queue.Count > 0)
+            {
+                var size = queue.Count;
+                int max = queue.Peek().val;
+                for(int i  = 0; i < size; i++)
+                {
+                    var node = queue.Dequeue();
+                    if (max < node.val)
+                        max = node.val;
+                    if (node.left != null)
+                        queue.Enqueue(node.left);
+                    if (node.right != null)
+                        queue.Enqueue(node.right);
+                }
+                res.Add(max);
             }
             return res;
         }
