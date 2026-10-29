@@ -420,14 +420,14 @@ namespace LeetCodeStudy.Timus.AdventureMode
         public IList<int> LargestValues(TreeNode root)
         {
             var res = new List<int>();
-            if(root == null) return res;
+            if (root == null) return res;
             var queue = new Queue<TreeNode>();
             queue.Enqueue(root);
-            while(queue.Count > 0)
+            while (queue.Count > 0)
             {
                 var size = queue.Count;
                 int max = queue.Peek().val;
-                for(int i  = 0; i < size; i++)
+                for (int i = 0; i < size; i++)
                 {
                     var node = queue.Dequeue();
                     if (max < node.val)
@@ -440,6 +440,84 @@ namespace LeetCodeStudy.Timus.AdventureMode
                 res.Add(max);
             }
             return res;
+        }
+        public TreeNode SearchBST(TreeNode root, int val)
+        {
+            if (root == null || root.val == val) return root;
+            if (val < root.val)
+                return SearchBST(root.left, val);
+            else
+                return SearchBST(root.right, val);
+
+        }
+        long prev = long.MinValue;
+        public bool IsValidBST(TreeNode root)
+        {
+
+            if (root == null) return true;
+            if (!IsValidBST(root.left))
+                return false;
+            if (root.val <= prev)
+                return false;
+            prev = root.val;
+            return IsValidBST(root.right);
+        }
+        public TreeNode InsertIntoBST(TreeNode root, int val)
+        {
+            if (root == null) return new TreeNode(val);
+            if (root.val < val)
+                root.right = InsertIntoBST(root.right, val);
+            else if (root.val > val)
+                root.left = InsertIntoBST(root.left, val);
+            return root;
+        }
+        public TreeNode DeleteNode(TreeNode root, int key)
+        {
+            if (root == null) return null;
+            if (root.val < key)
+                DeleteNode(root.right, key);
+            else if (root.val > key)
+                DeleteNode(root.left, key);
+            else
+            {
+                if (root.left == null) return root.right;
+                if (root.right == null) return root.left;
+                var minNode = root.right;
+                while (minNode.left != null)
+                    minNode = minNode.left;
+                root.val = minNode.val;
+                root.right = DeleteNode(root.right, minNode.val);
+            }
+            return root;
+        }
+        public TreeNode LowestCommonAncestor(TreeNode root, TreeNode p, TreeNode q)
+        {
+            if (root == null) return root;
+            if (p.val > root.val && q.val > root.val)
+                return LowestCommonAncestor(root.right, p, q);
+            if (p.val < root.val && q.val < root.val)
+                return LowestCommonAncestor(root.left, p, q);
+            return root;
+        }
+        public TreeNode BuildTree(int[] preorder, int[] inorder)
+        {
+            return Build(preorder, 0, preorder.Length - 1, inorder, 0, inorder.Length - 1);
+        }
+        private TreeNode Build(int[] pre, int preHead, int preEnd, int[] inArr, int inHead, int inEnd)
+        {
+            if (preHead > preEnd) return null;
+            var root = new TreeNode(pre[preHead]);
+            int index = inHead;
+            while (root.val != inArr[index])
+                index++;
+            int leftSize = index - preHead;
+            root.left = Build(pre, preHead + 1, leftSize + preHead, inArr, inHead, index - 1);
+            //根左右，左子树=根节点后一个（+1） -> 根节点+左子树长度
+            //左根右，左子树=第0个 -> 根节点前一个（-1）
+            root.right = Build(pre, preHead + leftSize + 1, preEnd, inArr, index + 1, inEnd);
+            //根左右，右子树=根节点后两个（左子树长度+1） -> 末尾都是右子树
+            //左根右，右子树=根节点后一个 -> 末尾都是右子树）
+            return root;
         }
         #endregion
     }
