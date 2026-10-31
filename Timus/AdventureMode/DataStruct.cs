@@ -501,9 +501,9 @@ namespace LeetCodeStudy.Timus.AdventureMode
         }
         public TreeNode BuildTree(int[] preorder, int[] inorder)
         {
-            return Build(preorder, 0, preorder.Length - 1, inorder, 0, inorder.Length - 1);
+            return Build1(preorder, 0, preorder.Length - 1, inorder, 0, inorder.Length - 1);
         }
-        private TreeNode Build(int[] pre, int preHead, int preEnd, int[] inArr, int inHead, int inEnd)
+        private TreeNode Build1(int[] pre, int preHead, int preEnd, int[] inArr, int inHead, int inEnd)
         {
             if (preHead > preEnd) return null;
             var root = new TreeNode(pre[preHead]);
@@ -511,12 +511,28 @@ namespace LeetCodeStudy.Timus.AdventureMode
             while (root.val != inArr[index])
                 index++;
             int leftSize = index - preHead;
-            root.left = Build(pre, preHead + 1, leftSize + preHead, inArr, inHead, index - 1);
+            root.left = Build1(pre, preHead + 1, leftSize + preHead, inArr, inHead, index - 1);
             //根左右，左子树=根节点后一个（+1） -> 根节点+左子树长度
             //左根右，左子树=第0个 -> 根节点前一个（-1）
-            root.right = Build(pre, preHead + leftSize + 1, preEnd, inArr, index + 1, inEnd);
+            root.right = Build1(pre, preHead + leftSize + 1, preEnd, inArr, index + 1, inEnd);
             //根左右，右子树=根节点后两个（左子树长度+1） -> 末尾都是右子树
             //左根右，右子树=根节点后一个 -> 末尾都是右子树）
+            return root;
+        }
+        public TreeNode ConstructFromPrePost(int[] preorder, int[] postorder)
+        {
+            return Build2(preorder, 0, preorder.Length - 1, postorder, 0, postorder.Length - 1);
+        }
+        private TreeNode Build2(int[] pre, int preHead, int preEnd, int[] post, int postHead, int postEnd)
+        {
+            if (preHead > preEnd) return null;
+            var root = new TreeNode(pre[preHead]);
+            int index = postHead;
+            int leftVal = pre[preHead + 1];
+            while (leftVal != post[index])
+                index++;
+            int leftSize = index - postHead+1;
+            root.left = Build2(pre, preHead + 1, index - 1, post, post, postEnd);
             return root;
         }
         #endregion
